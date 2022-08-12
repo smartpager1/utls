@@ -33,7 +33,7 @@ import (
 
 	"github.com/refraction-networking/utls/internal/fips140tls"
 	"github.com/refraction-networking/utls/internal/hpke"
-	"github.com/refraction-networking/utls/testenv"
+	"github.com/bogdanfinn/utls/testenv"
 )
 
 var rsaCertPEM = `-----BEGIN CERTIFICATE-----
