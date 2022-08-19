@@ -106,7 +106,7 @@ func (uconn *UConn) BuildHandshakeStateWithoutSession() error {
 }
 
 func (uconn *UConn) buildHandshakeState(loadSession bool) error {
-	if uconn.ClientHelloID == HelloGolang {
+	if uconn.ClientHelloID.Str() == HelloGolang.Str() {
 		if uconn.clientHelloBuildStatus == BuildByGoTLS {
 			return nil
 		}
@@ -278,7 +278,7 @@ func (uconn *UConn) SetSNI(sni string) {
 // RemoveSNIExtension removes SNI from the list of extensions sent in ClientHello
 // It returns an error when used with HelloGolang ClientHelloID
 func (uconn *UConn) RemoveSNIExtension() error {
-	if uconn.ClientHelloID == HelloGolang {
+	if uconn.ClientHelloID.Str() == HelloGolang.Str() {
 		return fmt.Errorf("cannot call RemoveSNIExtension on a UConn with a HelloGolang ClientHelloID")
 	}
 	uconn.omitSNIExtension = true

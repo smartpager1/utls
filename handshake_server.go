@@ -216,7 +216,7 @@ func (hs *serverHandshakeState) processClientHello() error {
 	foundCompression := false
 	// We only support null compression, so check that the client offered it.
 	for _, compression := range hs.clientHello.compressionMethods {
-		if compression == compressionNone {
+		if compression == CompressionNone {
 			foundCompression = true
 			break
 		}
@@ -252,7 +252,7 @@ func (hs *serverHandshakeState) processClientHello() error {
 
 	hs.hello.extendedMasterSecret = hs.clientHello.extendedMasterSecret
 	hs.hello.secureRenegotiationSupported = hs.clientHello.secureRenegotiationSupported
-	hs.hello.compressionMethod = compressionNone
+	hs.hello.compressionMethod = CompressionNone
 	if len(hs.clientHello.serverName) > 0 {
 		c.serverName = hs.clientHello.serverName
 	}

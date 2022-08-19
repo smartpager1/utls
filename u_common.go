@@ -137,6 +137,12 @@ const (
 	PskModeDHE   uint8 = pskModeDHE
 )
 
+type ClientHelloSpecFactory func() (ClientHelloSpec, error)
+
+var EmptyClientHelloSpecFactory = func() (ClientHelloSpec, error) {
+	return ClientHelloSpec{}, fmt.Errorf("please implement this method")
+}
+
 type ClientHelloID struct {
 	Client string
 
@@ -151,6 +157,8 @@ type ClientHelloID struct {
 	// Weights are only used for randomized fingerprints in func
 	// generateRandomizedSpec(). Must not be modified once set.
 	Weights *Weights
+
+	SpecFactory ClientHelloSpecFactory
 }
 
 func (p *ClientHelloID) Str() string {
@@ -161,13 +169,17 @@ func (p *ClientHelloID) IsSet() bool {
 	return (p.Client == "") && (p.Version == "")
 }
 
+func (p *ClientHelloID) ToSpec() (ClientHelloSpec, error) {
+	return p.SpecFactory()
+}
+
 const (
 	// clients
 	helloGolang           = "Golang"
 	helloRandomized       = "Randomized"
 	helloRandomizedALPN   = "Randomized-ALPN"
 	helloRandomizedNoALPN = "Randomized-NoALPN"
-	helloCustom           = "Custom"
+	helloCustomInternal   = "CustomInternal"
 	helloFirefox          = "Firefox"
 	helloOpera            = "Opera"
 	helloChrome           = "Chrome"
@@ -592,26 +604,26 @@ var (
 	// overwrite your changes to Hello(Config, Session are fine).
 	// You might want to call BuildHandshakeState() before applying any changes.
 	// UConn.Extensions will be completely ignored.
-	HelloGolang = ClientHelloID{helloGolang, helloAutoVers, nil, nil}
+	HelloGolang = ClientHelloID{helloGolang, helloAutoVers, nil, EmptyClientHelloSpecFactory}
 
 	// HelloCustom will prepare ClientHello with empty uconn.Extensions so you can fill it with
 	// TLSExtensions manually or use ApplyPreset function
-	HelloCustom = ClientHelloID{helloCustom, helloAutoVers, nil, nil}
+	HelloCustom = ClientHelloID{helloCustomInternal, helloAutoVers, nil, EmptyClientHelloSpecFactory}
 
 	// HelloRandomized* randomly adds/reorders extensions, ciphersuites, etc.
-	HelloRandomized       = ClientHelloID{helloRandomized, helloAutoVers, nil, nil}
-	HelloRandomizedALPN   = ClientHelloID{helloRandomizedALPN, helloAutoVers, nil, nil}
-	HelloRandomizedNoALPN = ClientHelloID{helloRandomizedNoALPN, helloAutoVers, nil, nil}
+	HelloRandomized       = ClientHelloID{helloRandomized, helloAutoVers, nil, EmptyClientHelloSpecFactory}
+	HelloRandomizedALPN   = ClientHelloID{helloRandomizedALPN, helloAutoVers, nil, EmptyClientHelloSpecFactory}
+	HelloRandomizedNoALPN = ClientHelloID{helloRandomizedNoALPN, helloAutoVers, nil, EmptyClientHelloSpecFactory}
 
 	// The rest will will parrot given browser.
 	HelloFirefox_Auto = HelloFirefox_120
-	HelloFirefox_55   = ClientHelloID{helloFirefox, "55", nil, nil}
-	HelloFirefox_56   = ClientHelloID{helloFirefox, "56", nil, nil}
-	HelloFirefox_63   = ClientHelloID{helloFirefox, "63", nil, nil}
-	HelloFirefox_65   = ClientHelloID{helloFirefox, "65", nil, nil}
-	HelloFirefox_99   = ClientHelloID{helloFirefox, "99", nil, nil}
-	HelloFirefox_102  = ClientHelloID{helloFirefox, "102", nil, nil}
-	HelloFirefox_105  = ClientHelloID{helloFirefox, "105", nil, nil}
+	HelloFirefox_55   = ClientHelloID{helloFirefox, "55", nil, EmptyClientHelloSpecFactory}
+	HelloFirefox_56   = ClientHelloID{helloFirefox, "56", nil, EmptyClientHelloSpecFactory}
+	HelloFirefox_63   = ClientHelloID{helloFirefox, "63", nil, EmptyClientHelloSpecFactory}
+	HelloFirefox_65   = ClientHelloID{helloFirefox, "65", nil, EmptyClientHelloSpecFactory}
+	HelloFirefox_99   = ClientHelloID{helloFirefox, "99", nil}
+	HelloFirefox_102  = ClientHelloID{helloFirefox, "102", nil, EmptyClientHelloSpecFactory}
+	HelloFirefox_105  = ClientHelloID{helloFirefox, "105", nil}
 	HelloFirefox_120  = ClientHelloID{helloFirefox, "120", nil, nil}
 
 	HelloChrome_Auto        = HelloChrome_133
@@ -638,8 +650,20 @@ var (
 	HelloChrome_115_PQ     = ClientHelloID{helloChrome, "115_PQ", nil, nil}
 	HelloChrome_115_PQ_PSK = ClientHelloID{helloChrome, "115_PQ_PSK", nil, nil}
 	HelloOpera_Auto = HelloOpera_89
-	HelloOpera_89   = ClientHelloID{helloOpera, "89", nil}
+	HelloOpera_89   = ClientHelloID{helloOpera, "89", nil, EmptyClientHelloSpecFactory}
 
+	HelloChrome_Auto = HelloChrome_104
+	HelloChrome_58   = ClientHelloID{helloChrome, "58", nil, EmptyClientHelloSpecFactory}
+	HelloChrome_62   = ClientHelloID{helloChrome, "62", nil, EmptyClientHelloSpecFactory}
+	HelloChrome_70   = ClientHelloID{helloChrome, "70", nil, EmptyClientHelloSpecFactory}
+	HelloChrome_72   = ClientHelloID{helloChrome, "72", nil, EmptyClientHelloSpecFactory}
+	HelloChrome_83   = ClientHelloID{helloChrome, "83", nil, EmptyClientHelloSpecFactory}
+	HelloChrome_87   = ClientHelloID{helloChrome, "87", nil, EmptyClientHelloSpecFactory}
+	HelloChrome_96   = ClientHelloID{helloChrome, "96", nil, EmptyClientHelloSpecFactory}
+	HelloChrome_100  = ClientHelloID{helloChrome, "100", nil, EmptyClientHelloSpecFactory}
+	HelloChrome_102  = ClientHelloID{helloChrome, "102", nil}
+	HelloChrome_103  = ClientHelloID{helloChrome, "103", nil, EmptyClientHelloSpecFactory}
+	HelloChrome_104  = ClientHelloID{helloChrome, "104", nil, EmptyClientHelloSpecFactory}
 	// Chrome ECH
 	HelloChrome_120 = ClientHelloID{helloChrome, "120", nil, nil}
 	// Chrome w/ Post-Quantum Key Agreement and Encrypted ClientHello
@@ -650,18 +674,18 @@ var (
 	HelloChrome_133 = ClientHelloID{helloChrome, "133", nil, nil}
 
 	HelloIOS_Auto = HelloIOS_15_5
-	HelloIOS_11_1 = ClientHelloID{helloIOS, "111", nil, nil} // legacy "111" means 11.1
-	HelloIOS_12_1 = ClientHelloID{helloIOS, "12.1", nil, nil}
-	HelloIOS_13   = ClientHelloID{helloIOS, "13", nil, nil}
-	HelloIOS_14   = ClientHelloID{helloIOS, "14", nil, nil}
+	HelloIOS_11_1 = ClientHelloID{helloIOS, "111", nil, EmptyClientHelloSpecFactory} // legacy "111" means 11.1
+	HelloIOS_12_1 = ClientHelloID{helloIOS, "12.1", nil, EmptyClientHelloSpecFactory}
+	HelloIOS_13   = ClientHelloID{helloIOS, "13", nil, EmptyClientHelloSpecFactory}
+	HelloIOS_14   = ClientHelloID{helloIOS, "14", nil, EmptyClientHelloSpecFactory}
 
-	HelloIOS_15_5 = ClientHelloID{helloIOS, "15.5", nil}
+	HelloIOS_15_5 = ClientHelloID{helloIOS, "15.5", nil, EmptyClientHelloSpecFactory}
 
 	HelloSafari_Auto = HelloSafari_15_5
-	HelloSafari_15_3 = ClientHelloID{helloSafari, "15.3", nil}
-	HelloSafari_15_5 = ClientHelloID{helloSafari, "15.5", nil}
+	HelloSafari_15_3 = ClientHelloID{helloSafari, "15.3", nil, EmptyClientHelloSpecFactory}
+	HelloSafari_15_5 = ClientHelloID{helloSafari, "15.5", nil, EmptyClientHelloSpecFactory}
 
-	HelloAndroid_11_OkHttp = ClientHelloID{helloAndroid, "11", nil, nil}
+	HelloAndroid_11_OkHttp = ClientHelloID{helloAndroid, "11", nil, EmptyClientHelloSpecFactory}
 
 	HelloEdge_Auto = HelloEdge_85 // HelloEdge_106 seems to be incompatible with this library
 	HelloEdge_85   = ClientHelloID{helloEdge, "85", nil, nil}

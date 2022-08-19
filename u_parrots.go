@@ -31,8 +31,8 @@ func UTLSIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 }
 
 func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
-	switch id {
-	case HelloChrome_58, HelloChrome_62:
+	switch id.Str() {
+	case HelloChrome_58.Str(), HelloChrome_62.Str():
 		return ClientHelloSpec{
 			TLSVersMax: VersionTLS12,
 			TLSVersMin: VersionTLS10,
@@ -52,7 +52,7 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 				TLS_RSA_WITH_AES_256_CBC_SHA,
 				TLS_RSA_WITH_3DES_EDE_CBC_SHA,
 			},
-			CompressionMethods: []byte{compressionNone},
+			CompressionMethods: []byte{CompressionNone},
 			Extensions: []TLSExtension{
 				&UtlsGREASEExtension{},
 				&RenegotiationInfoExtension{Renegotiation: RenegotiateOnceAsClient},
@@ -82,7 +82,7 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 			},
 			GetSessionID: sha256.Sum256,
 		}, nil
-	case HelloChrome_70:
+	case HelloChrome_70.Str():
 		return ClientHelloSpec{
 			TLSVersMin: VersionTLS10,
 			TLSVersMax: VersionTLS13,
@@ -106,7 +106,7 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 				TLS_RSA_WITH_3DES_EDE_CBC_SHA,
 			},
 			CompressionMethods: []byte{
-				compressionNone,
+				CompressionNone,
 			},
 			Extensions: []TLSExtension{
 				&UtlsGREASEExtension{},
@@ -154,7 +154,7 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 				&UtlsPaddingExtension{GetPaddingLen: BoringPaddingStyle},
 			},
 		}, nil
-	case HelloChrome_72:
+	case HelloChrome_72.Str():
 		return ClientHelloSpec{
 			CipherSuites: []uint16{
 				GREASE_PLACEHOLDER,
@@ -176,7 +176,7 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 				TLS_RSA_WITH_3DES_EDE_CBC_SHA,
 			},
 			CompressionMethods: []byte{
-				0x00, // compressionNone
+				CompressionNone,
 			},
 			Extensions: []TLSExtension{
 				&UtlsGREASEExtension{},
@@ -228,7 +228,7 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 				&UtlsPaddingExtension{GetPaddingLen: BoringPaddingStyle},
 			},
 		}, nil
-	case HelloChrome_83:
+	case HelloChrome_83.Str():
 		return ClientHelloSpec{
 			CipherSuites: []uint16{
 				GREASE_PLACEHOLDER,
@@ -249,7 +249,7 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 				TLS_RSA_WITH_AES_256_CBC_SHA,
 			},
 			CompressionMethods: []byte{
-				0x00, // compressionNone
+				CompressionNone,
 			},
 			Extensions: []TLSExtension{
 				&UtlsGREASEExtension{},
@@ -300,7 +300,7 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 				&UtlsPaddingExtension{GetPaddingLen: BoringPaddingStyle},
 			},
 		}, nil
-	case HelloChrome_87:
+	case HelloChrome_87.Str():
 		return ClientHelloSpec{
 			CipherSuites: []uint16{
 				GREASE_PLACEHOLDER,
@@ -321,7 +321,7 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 				TLS_RSA_WITH_AES_256_CBC_SHA,
 			},
 			CompressionMethods: []byte{
-				0x00, // compressionNone
+				CompressionNone,
 			},
 			Extensions: []TLSExtension{
 				&UtlsGREASEExtension{},
@@ -372,7 +372,7 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 				&UtlsPaddingExtension{GetPaddingLen: BoringPaddingStyle},
 			},
 		}, nil
-	case HelloChrome_96:
+	case HelloChrome_96.Str():
 		return ClientHelloSpec{
 			CipherSuites: []uint16{
 				GREASE_PLACEHOLDER,
@@ -393,7 +393,7 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 				TLS_RSA_WITH_AES_256_CBC_SHA,
 			},
 			CompressionMethods: []byte{
-				0x00, // compressionNone
+				CompressionNone,
 			},
 			Extensions: []TLSExtension{
 				&UtlsGREASEExtension{},
@@ -445,7 +445,7 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 				&UtlsPaddingExtension{GetPaddingLen: BoringPaddingStyle},
 			},
 		}, nil
-	case HelloChrome_100, HelloChrome_102:
+	case HelloChrome_100.Str():
 		return ClientHelloSpec{
 			CipherSuites: []uint16{
 				GREASE_PLACEHOLDER,
@@ -511,12 +511,12 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 				&UtlsCompressCertExtension{[]CertCompressionAlgo{
 					CertCompressionBrotli,
 				}},
-				&GenericExtension{Id: 0x4469}, // // extensionApplicationSettings WARNING: UNKNOWN EXTENSION, USE AT YOUR OWN RISK
+				&ALPSExtension{SupportedProtocols: []string{"h2"}},
 				&UtlsGREASEExtension{},
 				&UtlsPaddingExtension{GetPaddingLen: BoringPaddingStyle},
 			},
 		}, nil
-	case HelloChrome_103, HelloChrome_104:
+	case HelloChrome_103.Str(), HelloChrome_104.Str():
 		return ClientHelloSpec{
 			CipherSuites: []uint16{
 				GREASE_PLACEHOLDER,
@@ -582,7 +582,7 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 				&UtlsCompressCertExtension{[]CertCompressionAlgo{
 					CertCompressionBrotli,
 				}},
-				&ApplicationSettingsExtension{SupportedProtocols: []string{"h2"}},
+				&ALPSExtension{SupportedProtocols: []string{"h2"}},
 				&UtlsGREASEExtension{},
 				&UtlsPaddingExtension{GetPaddingLen: BoringPaddingStyle},
 			},
@@ -1024,7 +1024,7 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 				&UtlsGREASEExtension{},
 			}),
 		}, nil
-	case HelloFirefox_55, HelloFirefox_56:
+	case HelloFirefox_55.Str(), HelloFirefox_56.Str():
 		return ClientHelloSpec{
 			TLSVersMax: VersionTLS12,
 			TLSVersMin: VersionTLS10,
@@ -1045,7 +1045,7 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 				TLS_RSA_WITH_AES_256_CBC_SHA,
 				TLS_RSA_WITH_3DES_EDE_CBC_SHA,
 			},
-			CompressionMethods: []byte{compressionNone},
+			CompressionMethods: []byte{CompressionNone},
 			Extensions: []TLSExtension{
 				&SNIExtension{},
 				&ExtendedMasterSecretExtension{},
@@ -1072,7 +1072,7 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 			},
 			GetSessionID: nil,
 		}, nil
-	case HelloFirefox_63, HelloFirefox_65:
+	case HelloFirefox_63.Str(), HelloFirefox_65.Str():
 		return ClientHelloSpec{
 			TLSVersMin: VersionTLS10,
 			TLSVersMax: VersionTLS13,
@@ -1097,7 +1097,7 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 				TLS_RSA_WITH_3DES_EDE_CBC_SHA,
 			},
 			CompressionMethods: []byte{
-				compressionNone,
+				CompressionNone,
 			},
 			Extensions: []TLSExtension{
 				&SNIExtension{},
@@ -1143,7 +1143,7 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 				&FakeRecordSizeLimitExtension{0x4001},
 				&UtlsPaddingExtension{GetPaddingLen: BoringPaddingStyle},
 			}}, nil
-	case HelloFirefox_102:
+	case HelloFirefox_102.Str():
 		return ClientHelloSpec{
 			TLSVersMin: VersionTLS10,
 			TLSVersMax: VersionTLS13,
@@ -1167,7 +1167,7 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 				TLS_RSA_WITH_AES_256_CBC_SHA,
 			},
 			CompressionMethods: []byte{
-				compressionNone,
+				CompressionNone,
 			},
 			Extensions: []TLSExtension{
 				&SNIExtension{},
@@ -1187,7 +1187,15 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 				&SessionTicketExtension{},
 				&ALPNExtension{AlpnProtocols: []string{"h2", "http/1.1"}},
 				&StatusRequestExtension{},
-				&GenericExtension{Id: 0x0022}, // delegated_credentials
+				&GenericExtension{Id: ExtensionDelegatedCredentials},
+				/*&DelegatedCredentialsExtension{
+					AlgorithmsSignature: []SignatureScheme{ //signature_algorithms
+						ECDSAWithP256AndSHA256,
+						ECDSAWithP384AndSHA384,
+						ECDSAWithP521AndSHA512,
+						ECDSAWithSHA1,
+					},
+				},*/
 				&KeyShareExtension{[]KeyShare{
 					{Group: X25519},
 					{Group: CurveP256},
@@ -1214,7 +1222,7 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 				&FakeRecordSizeLimitExtension{0x4001},
 				&UtlsPaddingExtension{GetPaddingLen: BoringPaddingStyle},
 			}}, nil
-	case HelloOpera_89:
+	case HelloOpera_89.Str():
 		return ClientHelloSpec{
 			TLSVersMin: VersionTLS10,
 			TLSVersMax: VersionTLS13,
@@ -1243,7 +1251,7 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 				&UtlsGREASEExtension{},
 				&SNIExtension{},
 				&UtlsExtendedMasterSecretExtension{},
-				&RenegotiationInfoExtension{Renegotiation: RenegotiateOnceAsClient}, // extensionRenegotiationInfo (boringssl) (65281)
+				&RenegotiationInfoExtension{Renegotiation: RenegotiateOnceAsClient}, // ExtensionRenegotiationInfo (boringssl) (65281)
 				&SupportedCurvesExtension{[]CurveID{
 					CurveID(GREASE_PLACEHOLDER),
 					X25519,
@@ -1282,7 +1290,7 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 				&UtlsCompressCertExtension{[]CertCompressionAlgo{
 					CertCompressionBrotli,
 				}},
-				&GenericExtension{Id: 0x4469}, // extensionApplicationSettings
+				&ALPSExtension{SupportedProtocols: []string{"h2"}},
 				&UtlsGREASEExtension{},
 				&UtlsPaddingExtension{GetPaddingLen: BoringPaddingStyle},
 			}}, nil
@@ -1741,7 +1749,7 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 				},
 			},
 		}, nil
-	case HelloIOS_11_1:
+	case HelloIOS_11_1.Str():
 		return ClientHelloSpec{
 			TLSVersMax: VersionTLS12,
 			TLSVersMin: VersionTLS10,
@@ -1768,7 +1776,7 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 				TLS_RSA_WITH_AES_128_CBC_SHA,
 			},
 			CompressionMethods: []byte{
-				compressionNone,
+				CompressionNone,
 			},
 			Extensions: []TLSExtension{
 				&RenegotiationInfoExtension{Renegotiation: RenegotiateOnceAsClient},
@@ -1800,7 +1808,7 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 				}},
 			},
 		}, nil
-	case HelloIOS_12_1:
+	case HelloIOS_12_1.Str():
 		return ClientHelloSpec{
 			CipherSuites: []uint16{
 				TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,
@@ -1828,7 +1836,7 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 				TLS_RSA_WITH_3DES_EDE_CBC_SHA,
 			},
 			CompressionMethods: []byte{
-				compressionNone,
+				CompressionNone,
 			},
 			Extensions: []TLSExtension{
 				&RenegotiationInfoExtension{Renegotiation: RenegotiateOnceAsClient},
@@ -1862,7 +1870,7 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 				}},
 			},
 		}, nil
-	case HelloIOS_13:
+	case HelloIOS_13.Str():
 		return ClientHelloSpec{
 			CipherSuites: []uint16{
 				TLS_AES_128_GCM_SHA256,
@@ -1893,7 +1901,7 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 				TLS_RSA_WITH_3DES_EDE_CBC_SHA,
 			},
 			CompressionMethods: []byte{
-				0x00, // compressionNone
+				0x00, // CompressionNone
 			},
 			Extensions: []TLSExtension{
 				&RenegotiationInfoExtension{Renegotiation: RenegotiateOnceAsClient},
@@ -1939,7 +1947,7 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 				&UtlsPaddingExtension{GetPaddingLen: BoringPaddingStyle},
 			},
 		}, nil
-	case HelloIOS_14:
+	case HelloIOS_14.Str():
 		return ClientHelloSpec{
 			// TLSVersMax: VersionTLS12,
 			// TLSVersMin: VersionTLS10,
@@ -1973,7 +1981,7 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 				TLS_RSA_WITH_3DES_EDE_CBC_SHA,
 			},
 			CompressionMethods: []byte{
-				0x00, // compressionNone
+				CompressionNone,
 			},
 			Extensions: []TLSExtension{
 				&UtlsGREASEExtension{},
@@ -2024,7 +2032,7 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 				&UtlsPaddingExtension{GetPaddingLen: BoringPaddingStyle},
 			},
 		}, nil
-	case HelloAndroid_11_OkHttp:
+	case HelloAndroid_11_OkHttp.Str():
 		return ClientHelloSpec{
 			CipherSuites: []uint16{
 				TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
@@ -2041,7 +2049,7 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 				TLS_RSA_WITH_AES_256_CBC_SHA,
 			},
 			CompressionMethods: []byte{
-				0x00, // compressionNone
+				CompressionNone,
 			},
 			Extensions: []TLSExtension{
 				&SNIExtension{},
@@ -2070,7 +2078,7 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 				}},
 			},
 		}, nil
-	case HelloIOS_15_5:
+	case HelloIOS_15_5.Str():
 		return ClientHelloSpec{
 			CipherSuites: []uint16{
 				GREASE_PLACEHOLDER,
@@ -2096,7 +2104,7 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 				TLS_RSA_WITH_3DES_EDE_CBC_SHA,
 			},
 			CompressionMethods: []byte{
-				compressionNone,
+				CompressionNone,
 			},
 			Extensions: []TLSExtension{
 				&UtlsGREASEExtension{},
@@ -2150,7 +2158,7 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 			},
 		}, nil
 
-	case HelloSafari_15_3:
+	case HelloSafari_15_3.Str():
 		return ClientHelloSpec{
 			CipherSuites: []uint16{
 				GREASE_PLACEHOLDER,
@@ -2190,7 +2198,7 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 				&UtlsGREASEExtension{},
 				&SNIExtension{},
 				&UtlsExtendedMasterSecretExtension{},
-				&RenegotiationInfoExtension{Renegotiation: RenegotiateOnceAsClient}, // extensionRenegotiationInfo (boringssl) (65281)
+				&RenegotiationInfoExtension{Renegotiation: RenegotiateOnceAsClient}, // ExtensionRenegotiationInfo (boringssl) (65281)
 				&SupportedCurvesExtension{[]CurveID{
 					CurveID(GREASE_PLACEHOLDER),
 					X25519,
@@ -2233,7 +2241,7 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 				&UtlsPaddingExtension{GetPaddingLen: BoringPaddingStyle},
 			},
 		}, nil
-	case HelloSafari_15_5:
+	case HelloSafari_15_5.Str():
 		return ClientHelloSpec{
 			CipherSuites: []uint16{
 				GREASE_PLACEHOLDER,
@@ -2267,7 +2275,7 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 				&UtlsGREASEExtension{},
 				&SNIExtension{},
 				&UtlsExtendedMasterSecretExtension{},
-				&RenegotiationInfoExtension{Renegotiation: RenegotiateOnceAsClient}, // extensionRenegotiationInfo (boringssl) (65281)
+				&RenegotiationInfoExtension{Renegotiation: RenegotiateOnceAsClient}, // ExtensionRenegotiationInfo (boringssl) (65281)
 				&SupportedCurvesExtension{[]CurveID{
 					CurveID(GREASE_PLACEHOLDER),
 					X25519,
@@ -3469,30 +3477,35 @@ func ShuffleChromeTLSExtensions(exts []TLSExtension) []TLSExtension {
 
 func (uconn *UConn) applyPresetByID(id ClientHelloID) (err error) {
 
-	if uconn.clientHelloSpec == nil {
-		var spec ClientHelloSpec
-		uconn.ClientHelloID = id
+	if uconn.clientHelloSpec == nil {	var spec ClientHelloSpec
+	uconn.ClientHelloID = id
+	// choose/generate the spec
+	switch id.Client {
+	case helloRandomized, helloRandomizedNoALPN, helloRandomizedALPN:
+		spec, err = uconn.generateRandomizedSpec()
+		if err != nil {
+			return err
+		}
 
-		// choose/generate the spec
-		switch id.Client {
-		case helloRandomized, helloRandomizedNoALPN, helloRandomizedALPN:
-			spec, err = uconn.generateRandomizedSpec()
+		return uconn.ApplyPreset(&spec)
+	case helloCustomInternal:
+		return nil
+	default:
+		spec, err = UTLSIdToSpec(id)
+		if err != nil {
+			providedSpec, err := id.ToSpec()
 			if err != nil {
 				return err
 			}
-		case helloCustom:
-			return nil
-		default:
-			spec, err = UTLSIdToSpec(id)
-			if err != nil {
-				return err
-			}
+
+			return uconn.ApplyPreset(&providedSpec)
 		}
 
 		uconn.clientHelloSpec = &spec
 	}
 
 	return uconn.ApplyPreset(uconn.clientHelloSpec)
+	}
 }
 
 // ApplyPreset should only be used in conjunction with HelloCustom to apply custom specs.
@@ -3534,7 +3547,7 @@ func (uconn *UConn) ApplyPreset(p *ClientHelloSpec) error {
 	}
 
 	if len(hello.CompressionMethods) == 0 {
-		hello.CompressionMethods = []uint8{compressionNone}
+		hello.CompressionMethods = []uint8{CompressionNone}
 	}
 
 	// Currently, GREASE is assumed to come from BoringSSL

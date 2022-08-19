@@ -124,7 +124,7 @@ func TestNoSuiteOverlap(t *testing.T) {
 		vers:               VersionTLS12,
 		random:             make([]byte, 32),
 		cipherSuites:       []uint16{0xff00},
-		compressionMethods: []uint8{compressionNone},
+		compressionMethods: []uint8{CompressionNone},
 	}
 	testClientHelloFailure(t, testConfig, clientHello, "no cipher suite supported by both client and server")
 }
@@ -144,7 +144,7 @@ func TestNoRC4ByDefault(t *testing.T) {
 		vers:               VersionTLS12,
 		random:             make([]byte, 32),
 		cipherSuites:       []uint16{TLS_RSA_WITH_RC4_128_SHA},
-		compressionMethods: []uint8{compressionNone},
+		compressionMethods: []uint8{CompressionNone},
 	}
 	serverConfig := testConfig.Clone()
 	// Reset the enabled cipher suites to nil in order to test the
@@ -168,7 +168,7 @@ func TestDontSelectECDSAWithRSAKey(t *testing.T) {
 		vers:               VersionTLS12,
 		random:             make([]byte, 32),
 		cipherSuites:       []uint16{TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384},
-		compressionMethods: []uint8{compressionNone},
+		compressionMethods: []uint8{CompressionNone},
 		supportedCurves:    []CurveID{CurveP256},
 		supportedPoints:    []uint8{pointFormatUncompressed},
 	}
@@ -194,7 +194,7 @@ func TestDontSelectRSAWithECDSAKey(t *testing.T) {
 		vers:               VersionTLS12,
 		random:             make([]byte, 32),
 		cipherSuites:       []uint16{TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256},
-		compressionMethods: []uint8{compressionNone},
+		compressionMethods: []uint8{CompressionNone},
 		supportedCurves:    []CurveID{CurveP256},
 		supportedPoints:    []uint8{pointFormatUncompressed},
 	}
@@ -217,7 +217,7 @@ func TestRenegotiationExtension(t *testing.T) {
 
 	clientHello := &clientHelloMsg{
 		vers:                         VersionTLS12,
-		compressionMethods:           []uint8{compressionNone},
+		compressionMethods:           []uint8{CompressionNone},
 		random:                       make([]byte, 32),
 		secureRenegotiationSupported: true,
 		cipherSuites:                 []uint16{TLS_RSA_WITH_RC4_128_SHA},
@@ -282,7 +282,7 @@ func TestTLS12OnlyCipherSuites(t *testing.T) {
 			TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
 			TLS_RSA_WITH_RC4_128_SHA,
 		},
-		compressionMethods: []uint8{compressionNone},
+		compressionMethods: []uint8{CompressionNone},
 		supportedCurves:    []CurveID{CurveP256, CurveP384, CurveP521},
 		supportedPoints:    []uint8{pointFormatUncompressed},
 	}
@@ -1144,7 +1144,7 @@ func TestHandshakeServerSNIGetCertificateError(t *testing.T) {
 		vers:               VersionTLS12,
 		random:             make([]byte, 32),
 		cipherSuites:       []uint16{TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256},
-		compressionMethods: []uint8{compressionNone},
+		compressionMethods: []uint8{CompressionNone},
 		serverName:         "test",
 	}
 	testClientHelloFailure(t, serverConfig, clientHello, errMsg)
@@ -1165,7 +1165,7 @@ func TestHandshakeServerEmptyCertificates(t *testing.T) {
 		vers:               VersionTLS12,
 		random:             make([]byte, 32),
 		cipherSuites:       []uint16{TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256},
-		compressionMethods: []uint8{compressionNone},
+		compressionMethods: []uint8{CompressionNone},
 	}
 	testClientHelloFailure(t, serverConfig, clientHello, errMsg)
 
@@ -1177,7 +1177,7 @@ func TestHandshakeServerEmptyCertificates(t *testing.T) {
 		vers:               VersionTLS12,
 		random:             make([]byte, 32),
 		cipherSuites:       []uint16{TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256},
-		compressionMethods: []uint8{compressionNone},
+		compressionMethods: []uint8{CompressionNone},
 	}
 	testClientHelloFailure(t, serverConfig, clientHello, "no certificates")
 }
@@ -1502,7 +1502,7 @@ func TestSNIGivenOnFailure(t *testing.T) {
 		vers:               VersionTLS12,
 		random:             make([]byte, 32),
 		cipherSuites:       []uint16{TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256},
-		compressionMethods: []uint8{compressionNone},
+		compressionMethods: []uint8{CompressionNone},
 		serverName:         expectedServerName,
 	}
 
