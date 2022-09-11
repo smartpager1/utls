@@ -549,8 +549,8 @@ func (e *SignatureAlgorithmsCertExtension) Read(b []byte) (int, error) {
 		return 0, io.ErrShortBuffer
 	}
 	// https://tools.ietf.org/html/rfc5246#section-7.4.1.4.1
-	b[0] = byte(extensionSignatureAlgorithmsCert >> 8)
-	b[1] = byte(extensionSignatureAlgorithmsCert)
+	b[0] = byte(ExtensionSignatureAlgorithmsCert >> 8)
+	b[1] = byte(ExtensionSignatureAlgorithmsCert)
 	b[2] = byte((2 + 2*len(e.SupportedSignatureAlgorithms)) >> 8)
 	b[3] = byte(2 + 2*len(e.SupportedSignatureAlgorithms))
 	b[4] = byte((2 * len(e.SupportedSignatureAlgorithms)) >> 8)
