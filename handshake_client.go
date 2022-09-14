@@ -83,7 +83,7 @@ func (c *Conn) makeClientHello() (*clientHelloMsg, *keySharePrivateKeys, *echCli
 		scts:                         true,
 		serverName:                   hostnameInSNI(config.ServerName),
 		supportedCurves:              config.curvePreferences(maxVersion),
-		supportedPoints:              []uint8{pointFormatUncompressed},
+		supportedPoints:              []uint8{PointFormatUncompressed},
 		secureRenegotiationSupported: true,
 		alpnProtocols:                config.NextProtos,
 		supportedVersions:            supportedVersions,
