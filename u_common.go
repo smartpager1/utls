@@ -661,7 +661,7 @@ var (
 	HelloOpera_90   = ClientHelloID{helloOpera, "90", nil, EmptyClientHelloSpecFactory}
 	HelloOpera_89   = ClientHelloID{helloOpera, "89", nil, EmptyClientHelloSpecFactory}
 
-	HelloChrome_Auto = HelloChrome_106
+	HelloChrome_Auto = HelloChrome_107
 	HelloChrome_58   = ClientHelloID{helloChrome, "58", nil, EmptyClientHelloSpecFactory}
 	HelloChrome_62   = ClientHelloID{helloChrome, "62", nil, EmptyClientHelloSpecFactory}
 	HelloChrome_70   = ClientHelloID{helloChrome, "70", nil, EmptyClientHelloSpecFactory}
@@ -675,6 +675,7 @@ var (
 	HelloChrome_104  = ClientHelloID{helloChrome, "104", nil, EmptyClientHelloSpecFactory}
 	HelloChrome_105  = ClientHelloID{helloChrome, "105", nil, EmptyClientHelloSpecFactory}
 	HelloChrome_106  = ClientHelloID{helloChrome, "106", nil, EmptyClientHelloSpecFactory}
+	HelloChrome_107  = ClientHelloID{helloChrome, "107", nil, EmptyClientHelloSpecFactory}
 	// Chrome ECH
 	HelloChrome_120 = ClientHelloID{helloChrome, "120", nil, nil}
 	// Chrome w/ Post-Quantum Key Agreement and Encrypted ClientHello
