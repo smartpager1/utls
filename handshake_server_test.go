@@ -170,7 +170,7 @@ func TestDontSelectECDSAWithRSAKey(t *testing.T) {
 		cipherSuites:       []uint16{TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384},
 		compressionMethods: []uint8{CompressionNone},
 		supportedCurves:    []CurveID{CurveP256},
-		supportedPoints:    []uint8{pointFormatUncompressed},
+		supportedPoints:    []uint8{PointFormatUncompressed},
 	}
 	serverConfig := testConfig.Clone()
 	serverConfig.CipherSuites = clientHello.cipherSuites
@@ -196,7 +196,7 @@ func TestDontSelectRSAWithECDSAKey(t *testing.T) {
 		cipherSuites:       []uint16{TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256},
 		compressionMethods: []uint8{CompressionNone},
 		supportedCurves:    []CurveID{CurveP256},
-		supportedPoints:    []uint8{pointFormatUncompressed},
+		supportedPoints:    []uint8{PointFormatUncompressed},
 	}
 	serverConfig := testConfig.Clone()
 	serverConfig.CipherSuites = clientHello.cipherSuites
@@ -284,7 +284,7 @@ func TestTLS12OnlyCipherSuites(t *testing.T) {
 		},
 		compressionMethods: []uint8{CompressionNone},
 		supportedCurves:    []CurveID{CurveP256, CurveP384, CurveP521},
-		supportedPoints:    []uint8{pointFormatUncompressed},
+		supportedPoints:    []uint8{PointFormatUncompressed},
 	}
 
 	c, s := localPipe(t)
@@ -330,11 +330,11 @@ func TestTLSPointFormats(t *testing.T) {
 		supportedPoints     []uint8
 		wantSupportedPoints bool
 	}{
-		{"ECC", []uint16{TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256}, []CurveID{CurveP256}, []uint8{pointFormatUncompressed}, true},
+		{"ECC", []uint16{TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256}, []CurveID{CurveP256}, []uint8{PointFormatUncompressed}, true},
 		{"ECC without ec_point_format", []uint16{TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256}, []CurveID{CurveP256}, nil, false},
-		{"ECC with extra values", []uint16{TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256}, []CurveID{CurveP256}, []uint8{13, 37, pointFormatUncompressed, 42}, true},
+		{"ECC with extra values", []uint16{TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256}, []CurveID{CurveP256}, []uint8{13, 37, PointFormatUncompressed, 42}, true},
 		{"RSA", []uint16{TLS_RSA_WITH_AES_256_GCM_SHA384}, nil, nil, false},
-		{"RSA with ec_point_format", []uint16{TLS_RSA_WITH_AES_256_GCM_SHA384}, nil, []uint8{pointFormatUncompressed}, false},
+		{"RSA with ec_point_format", []uint16{TLS_RSA_WITH_AES_256_GCM_SHA384}, nil, []uint8{PointFormatUncompressed}, false},
 	}
 	for _, tt := range tests {
 		// The RSA subtests should be enabled for FIPS 140 required mode: #70505
@@ -347,7 +347,7 @@ func TestTLSPointFormats(t *testing.T) {
 				vers:               VersionTLS12,
 				random:             make([]byte, 32),
 				cipherSuites:       tt.cipherSuites,
-				compressionMethods: []uint8{compressionNone},
+				compressionMethods: []uint8{CompressionNone},
 				supportedCurves:    tt.supportedCurves,
 				supportedPoints:    tt.supportedPoints,
 			}
@@ -384,7 +384,7 @@ func TestTLSPointFormats(t *testing.T) {
 				t.Fatalf("didn't get ServerHello message in reply. Got %v\n", reply)
 			}
 			if tt.wantSupportedPoints {
-				if !bytes.Equal(serverHello.supportedPoints, []uint8{pointFormatUncompressed}) {
+				if !bytes.Equal(serverHello.supportedPoints, []uint8{PointFormatUncompressed}) {
 					t.Fatal("incorrect ec_point_format extension from server")
 				}
 			} else {
@@ -2005,7 +2005,7 @@ func TestAESCipherReorderingTLS13(t *testing.T) {
 				clientHello: &clientHelloMsg{
 					cipherSuites:       tc.clientCiphers,
 					supportedVersions:  []uint16{VersionTLS13},
-					compressionMethods: []uint8{compressionNone},
+					compressionMethods: []uint8{CompressionNone},
 					keyShares:          []keyShare{{group: X25519, data: pk.PublicKey().Bytes()}},
 					supportedCurves:    []CurveID{X25519},
 				},

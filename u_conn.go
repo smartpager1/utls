@@ -40,7 +40,8 @@ type UConn struct {
 
 	greaseSeed [ssl_grease_last_index]uint16
 
-	omitSNIExtension bool
+	omitSNIExtension            bool
+	WithRandomTLSExtensionOrder bool
 
 	// skipResumptionOnNilExtension is copied from `Config.PreferSkipResumptionOnNilExtension`.
 	//
@@ -61,13 +62,13 @@ type UConn struct {
 
 // UClient returns a new uTLS client, with behavior depending on clientHelloID.
 // Config CAN be nil, but make sure to eventually specify ServerName.
-func UClient(conn net.Conn, config *Config, clientHelloID ClientHelloID) *UConn {
+func UClient(conn net.Conn, config *Config, clientHelloID ClientHelloID, withRandomTLSExtensionOrder bool) *UConn {
 	if config == nil {
 		config = &Config{}
 	}
 	tlsConn := Conn{conn: conn, config: config, isClient: true}
 	handshakeState := PubClientHandshakeState{C: &tlsConn, Hello: &PubClientHelloMsg{}}
-	uconn := UConn{Conn: &tlsConn, ClientHelloID: clientHelloID, HandshakeState: handshakeState}
+	uconn := UConn{Conn: &tlsConn, ClientHelloID: clientHelloID, HandshakeState: handshakeState, WithRandomTLSExtensionOrder: withRandomTLSExtensionOrder}
 	uconn.HandshakeState.uconn = &uconn
 	uconn.handshakeFn = uconn.clientHandshake
 	uconn.sessionController = newSessionController(&uconn)
