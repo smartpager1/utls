@@ -619,6 +619,7 @@ var (
 	HelloRandomizedNoALPN = ClientHelloID{helloRandomizedNoALPN, false, helloAutoVers, nil, EmptyClientHelloSpecFactory}
 
 	// The rest will will parrot given browser.
+	HelloFirefox_Auto = HelloFirefox_110
 	HelloFirefox_Auto = HelloFirefox_108
 	HelloFirefox_Auto = HelloFirefox_106
 	HelloFirefox_Auto = HelloFirefox_105
@@ -634,6 +635,7 @@ var (
 	HelloFirefox_105  = ClientHelloID{helloFirefox, false, "105", nil, EmptyClientHelloSpecFactory}
 	HelloFirefox_106  = ClientHelloID{helloFirefox, false, "106", nil, EmptyClientHelloSpecFactory}
 	HelloFirefox_108  = ClientHelloID{helloFirefox, false, "108", nil, EmptyClientHelloSpecFactory}
+	HelloFirefox_110  = ClientHelloID{helloFirefox, false, "110", nil, EmptyClientHelloSpecFactory}
 	HelloFirefox_105  = ClientHelloID{helloFirefox, "105", nil}
 	HelloFirefox_120  = ClientHelloID{helloFirefox, "120", nil, nil}
 
@@ -665,7 +667,7 @@ var (
 	HelloOpera_90   = ClientHelloID{helloOpera, false, "90", nil, EmptyClientHelloSpecFactory}
 	HelloOpera_89   = ClientHelloID{helloOpera, false, "89", nil, EmptyClientHelloSpecFactory}
 
-	HelloChrome_Auto = HelloChrome_109
+	HelloChrome_Auto = HelloChrome_110
 	HelloChrome_58   = ClientHelloID{helloChrome, false, "58", nil, EmptyClientHelloSpecFactory}
 	HelloChrome_62   = ClientHelloID{helloChrome, false, "62", nil, EmptyClientHelloSpecFactory}
 	HelloChrome_70   = ClientHelloID{helloChrome, false, "70", nil, EmptyClientHelloSpecFactory}
@@ -690,6 +692,7 @@ var (
 	// Chrome w/ New ALPS codepoint
 	HelloChrome_133 = ClientHelloID{helloChrome, "133", nil, nil}
 	HelloChrome_109  = ClientHelloID{helloChrome, false, "109", nil, EmptyClientHelloSpecFactory}
+	HelloChrome_110  = ClientHelloID{helloChrome, false, "110", nil, EmptyClientHelloSpecFactory}
 
 	HelloIOS_Auto = HelloIOS_16_0
 	HelloIOS_11_1 = ClientHelloID{helloIOS, false, "111", nil, EmptyClientHelloSpecFactory} // legacy "111" means 11.1
