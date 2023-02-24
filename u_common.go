@@ -792,6 +792,24 @@ func utlsMacSHA384(key []byte) hash.Hash {
 }
 
 var utlsSupportedCipherSuites []*cipherSuite
+var utlsSupportedGroups = []CurveID{
+	X25519,
+	CurveP256,
+	CurveP384,
+	CurveP521,
+	// FAKEFFDHE2048,
+	// FAKEFFDHE3072,
+}
+
+func isGroupSupported(id CurveID) bool {
+	for _, group := range utlsSupportedGroups {
+		if group == id {
+			return true
+		}
+	}
+
+	return false
+}
 
 func init() {
 	utlsSupportedCipherSuites = append(cipherSuites, []*cipherSuite{

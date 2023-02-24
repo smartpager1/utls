@@ -269,6 +269,30 @@ type echClientContext struct {
 	retryConfigs    []byte
 }
 
+func handleCurves(rng io.Reader, curves []CurveID) ([]keyShare, map[CurveID]ecdheParameters, error) {
+	var paramsByCurve = make(map[CurveID]ecdheParameters)
+	var keyShares []keyShare
+
+	for _, curveID := range curves {
+		if _, ok := curveForCurveID(curveID); curveID != X25519 && !ok {
+			return nil, nil, errors.New("tls: CurvePreferences includes unsupported curve")
+		}
+
+		if !isGroupSupported(curveID) {
+			continue
+		}
+
+		params, err := generateECDHEParameters(rng, curveID)
+		if err != nil {
+			return nil, nil, err
+		}
+		keyShares = append(keyShares, keyShare{group: curveID, data: params.PublicKey()})
+		paramsByCurve[curveID] = params
+	}
+
+	return keyShares, paramsByCurve, nil
+}
+
 func (c *Conn) clientHandshake(ctx context.Context) (err error) {
 	if c.config == nil {
 		c.config = defaultConfig()

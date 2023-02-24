@@ -1034,8 +1034,8 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 					CurveP256,
 					CurveP384,
 					CurveP521,
-					CurveID(FakeFFDHE2048),
-					CurveID(FakeFFDHE3072),
+					FAKEFFDHE2048,
+					FAKEFFDHE3072,
 				}},
 				&SupportedPointsExtension{SupportedPoints: []byte{
 					PointFormatUncompressed,
@@ -1102,8 +1102,8 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 					CurveP256,
 					CurveP384,
 					CurveP521,
-					CurveID(FakeFFDHE2048),
-					CurveID(FakeFFDHE3072),
+					FAKEFFDHE2048,
+					FAKEFFDHE3072,
 				}},
 				&SupportedPointsExtension{SupportedPoints: []byte{
 					PointFormatUncompressed,
@@ -1144,7 +1144,7 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 				&FakeRecordSizeLimitExtension{0x4001},
 				&UtlsPaddingExtension{GetPaddingLen: BoringPaddingStyle},
 			}}, nil
-	case HelloFirefox_106.Str(), HelloFirefox_108.Str(), HelloFirefox_110.Str():
+	case HelloFirefox_106.Str(), HelloFirefox_108.Str():
 		return ClientHelloSpec{
 			CipherSuites: []uint16{
 				TLS_AES_128_GCM_SHA256,
@@ -1177,8 +1177,8 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 					CurveP256,
 					CurveP384,
 					CurveP521,
-					CurveID(FakeFFDHE2048),
-					CurveID(FakeFFDHE3072),
+					FAKEFFDHE2048,
+					FAKEFFDHE3072,
 				}},
 				&SupportedPointsExtension{SupportedPoints: []byte{
 					PointFormatUncompressed,
@@ -1216,6 +1216,79 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 					PKCS1WithSHA1,
 				}},
 				&PSKKeyExchangeModesExtension{[]uint8{pskModeDHE}},
+				&FakeRecordSizeLimitExtension{0x4001},
+				&UtlsPaddingExtension{GetPaddingLen: BoringPaddingStyle},
+			}}, nil
+	case HelloFirefox_110.Str():
+		return ClientHelloSpec{
+			CipherSuites: []uint16{
+				TLS_AES_128_GCM_SHA256,
+				TLS_CHACHA20_POLY1305_SHA256,
+				TLS_AES_256_GCM_SHA384,
+				TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
+				TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
+				TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256,
+				TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256,
+				TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,
+				TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,
+				TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA,
+				TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,
+				TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,
+				TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,
+				TLS_RSA_WITH_AES_128_GCM_SHA256,
+				TLS_RSA_WITH_AES_256_GCM_SHA384,
+				TLS_RSA_WITH_AES_128_CBC_SHA,
+				TLS_RSA_WITH_AES_256_CBC_SHA,
+			},
+			CompressionMethods: []byte{
+				CompressionNone,
+			},
+			Extensions: []TLSExtension{
+				&SNIExtension{},
+				&UtlsExtendedMasterSecretExtension{},
+				&RenegotiationInfoExtension{Renegotiation: RenegotiateOnceAsClient},
+				&SupportedCurvesExtension{[]CurveID{
+					X25519,
+					CurveP256,
+					CurveP384,
+					CurveP521,
+					FAKEFFDHE2048,
+					FAKEFFDHE3072,
+				}},
+				&SupportedPointsExtension{SupportedPoints: []byte{
+					PointFormatUncompressed,
+				}},
+				&ALPNExtension{AlpnProtocols: []string{"h2", "http/1.1"}},
+				&StatusRequestExtension{},
+				&DelegatedCredentialsExtension{
+					AlgorithmsSignature: []SignatureScheme{
+						ECDSAWithP256AndSHA256,
+						ECDSAWithP384AndSHA384,
+						ECDSAWithP521AndSHA512,
+						ECDSAWithSHA1,
+					},
+				},
+				&KeyShareExtension{[]KeyShare{
+					{Group: X25519},
+					{Group: CurveP256},
+				}},
+				&SupportedVersionsExtension{[]uint16{
+					VersionTLS13,
+					VersionTLS12,
+				}},
+				&SignatureAlgorithmsExtension{SupportedSignatureAlgorithms: []SignatureScheme{
+					ECDSAWithP256AndSHA256,
+					ECDSAWithP384AndSHA384,
+					ECDSAWithP521AndSHA512,
+					PSSWithSHA256,
+					PSSWithSHA384,
+					PSSWithSHA512,
+					PKCS1WithSHA256,
+					PKCS1WithSHA384,
+					PKCS1WithSHA512,
+					ECDSAWithSHA1,
+					PKCS1WithSHA1,
+				}},
 				&FakeRecordSizeLimitExtension{0x4001},
 				&UtlsPaddingExtension{GetPaddingLen: BoringPaddingStyle},
 			}}, nil
@@ -1397,8 +1470,8 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 					CurveP256,
 					CurveP384,
 					CurveP521,
-					CurveID(FakeFFDHE2048),
-					CurveID(FakeFFDHE3072),
+					FAKEFFDHE2048,
+					FAKEFFDHE3072,
 				}},
 				&SupportedPointsExtension{SupportedPoints: []byte{ //ec_point_formats
 					PointFormatUncompressed,
@@ -3346,13 +3419,13 @@ func (uconn *UConn) ApplyPreset(p *ClientHelloSpec) error {
 				}
 			}
 		case *KeyShareExtension:
-			preferredCurveIsSet := false
 			for i := range ext.KeyShares {
 				curveID := ext.KeyShares[i].Group
 				if isGREASEUint16(uint16(curveID)) { // just in case the user set a GREASE value instead of unGREASEd
 					ext.KeyShares[i].Group = CurveID(GetBoringGREASEValue(uconn.greaseSeed, ssl_grease_group))
 					continue
 				}
+
 				if len(ext.KeyShares[i].Data) > 1 {
 					continue
 				}
