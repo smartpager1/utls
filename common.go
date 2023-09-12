@@ -429,6 +429,9 @@ const (
 	// Legacy signature and hash algorithms for TLS 1.2.
 	PKCS1WithSHA1 SignatureScheme = 0x0201
 	ECDSAWithSHA1 SignatureScheme = 0x0203
+
+	SHA224_RSA   SignatureScheme = 0x0301
+	SHA224_ECDSA SignatureScheme = 0x0303
 )
 
 // ClientHelloInfo contains information from a ClientHello message in order to

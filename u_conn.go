@@ -74,7 +74,7 @@ func UClient(conn net.Conn, config *Config, clientHelloID ClientHelloID, withRan
 	uconn.handshakeFn = uconn.clientHandshake
 	uconn.sessionController = newSessionController(&uconn)
 	uconn.utls.sessionController = uconn.sessionController
-	uconn.skipResumptionOnNilExtension = config.PreferSkipResumptionOnNilExtension || clientHelloID.Client != helloCustom
+	uconn.skipResumptionOnNilExtension = config.PreferSkipResumptionOnNilExtension || clientHelloID.Str() != HelloCustom.Str()
 	return &uconn
 }
 
