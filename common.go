@@ -130,7 +130,8 @@ const (
 	ExtensionKeyShare                uint16 = 51
 	ExtensionQUICTransportParameters uint16 = 57
 	ExtensionNextProtoNeg            uint16 = 13172 // not IANA assigned
-	ExtensionALPS                    uint16 = 17513
+	ExtensionALPSOld                 uint16 = 17513 // same name as google is using https://boringssl.googlesource.com/boringssl/+/HEAD/include/openssl/tls1.h#115
+	ExtensionALPS                    uint16 = 17613
 	ExtensionECH                     uint16 = 65037
 	ExtensionRenegotiationInfo       uint16 = 65281
 	extensionRenegotiationInfo       uint16 = 0xff01

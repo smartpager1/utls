@@ -463,9 +463,16 @@ func (chs *ClientHelloSpec) ImportTLSClientHello(data map[string][]byte) error {
 				if err != nil {
 					return err
 				}
-			case utlsExtensionApplicationSettings:
+			case ExtensionALPSOld:
 				// TODO: tlsfingerprint.io should record/provide application settings data
-				extWriter.(*ApplicationSettingsExtension).SupportedProtocols = []string{"h2"}
+				ext := extWriter.(*ApplicationSettingsExtension)
+				ext.CodePoint = ExtensionALPSOld
+				ext.SupportedProtocols = []string{"h2"}
+			case ExtensionALPS:
+				// TODO: tlsfingerprint.io should record/provide application settings data
+				ext := extWriter.(*ApplicationSettingsExtension)
+				ext.CodePoint = ExtensionALPS
+				ext.SupportedProtocols = []string{"h2"}
 			case utlsExtensionApplicationSettingsNew:
 				extWriter.(*ApplicationSettingsExtensionNew).SupportedProtocols = []string{"h2"}
 			case ExtensionPreSharedKey:
@@ -738,6 +745,7 @@ type Weights struct {
 	Extensions_Append_Reneg                            float64
 	Extensions_Append_EMS                              float64
 	FirstKeyShare_Set_CurveP256                        float64
+	Extensions_Append_ALPS_Old                         float64
 	Extensions_Append_ALPS                             float64
 }
 
@@ -759,6 +767,7 @@ var DefaultWeights = Weights{
 	Extensions_Append_Reneg:                            0.75,
 	Extensions_Append_EMS:                              0.77,
 	FirstKeyShare_Set_CurveP256:                        0.25,
+	Extensions_Append_ALPS_Old:                         0.33,
 	Extensions_Append_ALPS:                             0.33,
 }
 

@@ -703,6 +703,21 @@ type applicationSettingsExtension struct {
 	codePoint uint16
 }
 
+func NewApplicationSettingsExtension(supportedProtocols ...string) *ApplicationSettingsExtension {
+	return &ApplicationSettingsExtension{
+		CodePoint:          ExtensionALPS,
+		SupportedProtocols: supportedProtocols,
+	}
+}
+
+// same name as google is using https://boringssl.googlesource.com/boringssl/+/HEAD/include/openssl/tls1.h#115
+func NewApplicationSettingsExtensionOld(supportedProtocols ...string) *ApplicationSettingsExtension {
+	return &ApplicationSettingsExtension{
+		CodePoint:          ExtensionALPSOld,
+		SupportedProtocols: supportedProtocols,
+	}
+}
+
 func (e *applicationSettingsExtension) writeToUConn(uc *UConn) error {
 	return nil
 }
