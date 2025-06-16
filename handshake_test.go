@@ -493,7 +493,7 @@ func testUtlsHandshake(t *testing.T, clientConfig, serverConfig *Config, spec *C
 			io.Reader
 		}
 		if spec != nil {
-			ucli := UClient(c, clientConfig, HelloCustom)
+			ucli := UClient(c, clientConfig, HelloCustom, false, false)
 			if err = ucli.ApplyPreset(spec); err != nil {
 				return
 			}

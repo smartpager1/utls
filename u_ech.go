@@ -10,7 +10,6 @@ import (
 
 	"github.com/bogdanfinn/utls/dicttls"
 	"github.com/cloudflare/circl/hpke"
-	"github.com/refraction-networking/utls/dicttls"
 	"golang.org/x/crypto/cryptobyte"
 )
 

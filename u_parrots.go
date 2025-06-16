@@ -512,7 +512,6 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 					CertCompressionBrotli,
 				}},
 				&ApplicationSettingsExtension{
-					CodePoint:          ExtensionALPSOld,
 					SupportedProtocols: []string{"h2"},
 				},
 				&UtlsGREASEExtension{},
@@ -586,7 +585,6 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 					CertCompressionBrotli,
 				}},
 				&ApplicationSettingsExtension{
-					CodePoint:          ExtensionALPSOld,
 					SupportedProtocols: []string{"h2"},
 				},
 				&UtlsGREASEExtension{},
@@ -628,7 +626,6 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 					{Group: X25519},
 				}},
 				&ApplicationSettingsExtension{
-					CodePoint:          ExtensionALPSOld,
 					SupportedProtocols: []string{"h2"},
 				},
 				&SNIExtension{},
@@ -699,7 +696,6 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 					PointFormatUncompressed,
 				}},
 				&ApplicationSettingsExtension{
-					CodePoint:          ExtensionALPSOld,
 					SupportedProtocols: []string{"h2"},
 				},
 				&StatusRequestExtension{},
@@ -774,7 +770,6 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 					{Group: X25519},
 				}},
 				&ApplicationSettingsExtension{
-					CodePoint:          ExtensionALPSOld,
 					SupportedProtocols: []string{"h2"},
 				},
 				&SupportedVersionsExtension{[]uint16{
@@ -883,7 +878,6 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 					CertCompressionBrotli,
 				}},
 				&ApplicationSettingsExtension{
-					CodePoint:          ExtensionALPSOld,
 					SupportedProtocols: []string{"h2"},
 				},
 				BoringGREASEECH(),
@@ -960,14 +954,13 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 					CertCompressionBrotli,
 				}},
 				&ApplicationSettingsExtension{
-					CodePoint:          ExtensionALPSOld,
 					SupportedProtocols: []string{"h2"},
 				},
 				BoringGREASEECH(),
 				&UtlsGREASEExtension{},
 			}),
 		}, nil
-	case HelloChrome_131:
+	case HelloChrome_131.Str():
 		return ClientHelloSpec{
 			CipherSuites: []uint16{
 				GREASE_PLACEHOLDER,
@@ -1040,7 +1033,7 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 				&UtlsGREASEExtension{},
 			}),
 		}, nil
-	case HelloChrome_133:
+	case HelloChrome_133.Str():
 		return ClientHelloSpec{
 			CipherSuites: []uint16{
 				GREASE_PLACEHOLDER,
@@ -1522,7 +1515,6 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 					CertCompressionBrotli,
 				}},
 				&ApplicationSettingsExtension{
-					CodePoint:          ExtensionALPSOld,
 					SupportedProtocols: []string{"h2"},
 				},
 				&UtlsGREASEExtension{},
@@ -1595,7 +1587,6 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 					CertCompressionBrotli,
 				}},
 				&ApplicationSettingsExtension{
-					CodePoint:          ExtensionALPSOld,
 					SupportedProtocols: []string{"h2"},
 				},
 				&UtlsGREASEExtension{},
@@ -2489,7 +2480,6 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 					},
 				},
 				&ApplicationSettingsExtension{
-					CodePoint:          ExtensionALPSOld,
 					SupportedProtocols: []string{"h2"},
 				},
 				&UtlsGREASEExtension{},
@@ -2890,7 +2880,6 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 					},
 				},
 				&ApplicationSettingsExtension{
-					CodePoint:          ExtensionALPSOld,
 					SupportedProtocols: []string{"h2"},
 				},
 				&UtlsGREASEExtension{},
@@ -2966,7 +2955,6 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 					CertCompressionBrotli,
 				}},
 				&ApplicationSettingsExtension{
-					CodePoint:          ExtensionALPSOld,
 					SupportedProtocols: []string{"h2"},
 				},
 				&UtlsGREASEExtension{},
@@ -3006,7 +2994,6 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 					{Group: X25519},
 				}},
 				&ApplicationSettingsExtension{
-					CodePoint:          ExtensionALPSOld,
 					SupportedProtocols: []string{"h2"},
 				},
 				&SupportedVersionsExtension{[]uint16{
@@ -3115,7 +3102,6 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 					CertCompressionBrotli,
 				}},
 				&ApplicationSettingsExtension{
-					CodePoint:          ExtensionALPSOld,
 					SupportedProtocols: []string{"h2"},
 				},
 				&UtlsGREASEExtension{},
@@ -3193,7 +3179,6 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 					CertCompressionBrotli,
 				}},
 				&ApplicationSettingsExtension{
-					CodePoint:          ExtensionALPSOld,
 					SupportedProtocols: []string{"h2"},
 				},
 				&UtlsGREASEExtension{},
@@ -3252,51 +3237,54 @@ func ShuffleChromeTLSExtensions(exts []TLSExtension) []TLSExtension {
 
 func (uconn *UConn) applyPresetByID(id ClientHelloID) (err error) {
 
-	if uconn.clientHelloSpec == nil {	var spec ClientHelloSpec
-	uconn.ClientHelloID = id
-	// choose/generate the spec
-	switch id.Client {
-	case helloRandomized, helloRandomizedNoALPN, helloRandomizedALPN:
-		spec, err = uconn.generateRandomizedSpec()
-		if err != nil {
-			return err
-		}
-
-		return uconn.ApplyPreset(&spec)
-	case helloCustomInternal:
-		return nil
-	default:
-		spec, err = id.ToSpec()
-		if err != nil {
-			spec, err = UTLSIdToSpec(id)
+	if uconn.clientHelloSpec == nil {
+		var spec ClientHelloSpec
+		uconn.ClientHelloID = id
+		// choose/generate the spec
+		switch id.Client {
+		case helloRandomized, helloRandomizedNoALPN, helloRandomizedALPN:
+			spec, err = uconn.generateRandomizedSpec()
 			if err != nil {
 				return err
 			}
-		}
 
-		if uconn.WithForceHttp1 {
-			for _, ext := range spec.Extensions {
-				switch ext.(type) {
-				case *ALPNExtension:
-					alpnExt, ok := ext.(*ALPNExtension)
-					if !ok {
-						return fmt.Errorf("extension is not of type *ALPNExtension")
-					}
-
-					alpnExt.AlpnProtocols = []string{"http/1.1"}
+			return uconn.ApplyPreset(&spec)
+		case helloCustomInternal:
+			return nil
+		default:
+			spec, err = id.ToSpec()
+			if err != nil {
+				spec, err = UTLSIdToSpec(id)
+				if err != nil {
+					return err
 				}
 			}
+
+			if uconn.WithForceHttp1 {
+				for _, ext := range spec.Extensions {
+					switch ext.(type) {
+					case *ALPNExtension:
+						alpnExt, ok := ext.(*ALPNExtension)
+						if !ok {
+							return fmt.Errorf("extension is not of type *ALPNExtension")
+						}
+
+						alpnExt.AlpnProtocols = []string{"http/1.1"}
+					}
+				}
+			}
+
+			if uconn.WithRandomTLSExtensionOrder {
+				spec.Extensions = ShuffleChromeTLSExtensions(spec.Extensions)
+			}
+
+			uconn.clientHelloSpec = &spec
 		}
 
-		if uconn.WithRandomTLSExtensionOrder {
-			spec.Extensions = ShuffleChromeTLSExtensions(spec.Extensions)
-		}
-
-		uconn.clientHelloSpec = &spec
+		return uconn.ApplyPreset(uconn.clientHelloSpec)
 	}
 
-	return uconn.ApplyPreset(uconn.clientHelloSpec)
-	}
+	return nil
 }
 
 // ApplyPreset should only be used in conjunction with HelloCustom to apply custom specs.
@@ -3669,25 +3657,10 @@ func generateRandomizedSpec(
 				return p, err
 			}
 
-			noAlpsOld := false // TODO: clarify if its really a randomization case to have either old or new or nothing at all
 			if r.FlipWeightedCoin(id.Weights.Extensions_Append_ALPS) {
 				// As with the ALPN case above, default to something popular
 				// (unlike ALPN, ALPS can't yet be specified in uconn.config).
-				noAlpsOld = true
-				alps := &ApplicationSettingsExtension{
-					CodePoint:          ExtensionALPSOld,
-					SupportedProtocols: []string{"h2"},
-				}
-				p.Extensions = append(p.Extensions, alps)
-			}
-
-			if r.FlipWeightedCoin(id.Weights.Extensions_Append_ALPS) && noAlpsOld {
-				// As with the ALPN case above, default to something popular
-				// (unlike ALPN, ALPS can't yet be specified in uconn.config).
-				alps := &ApplicationSettingsExtension{
-					CodePoint:          ExtensionALPS,
-					SupportedProtocols: []string{"h2"},
-				}
+				alps := &ApplicationSettingsExtension{SupportedProtocols: []string{"h2"}}
 				p.Extensions = append(p.Extensions, alps)
 			}
 		}

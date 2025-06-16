@@ -31,8 +31,8 @@ import (
 
 	"golang.org/x/crypto/cryptobyte"
 
-	"github.com/refraction-networking/utls/internal/fips140tls"
-	"github.com/refraction-networking/utls/internal/hpke"
+	"github.com/bogdanfinn/utls/internal/fips140tls"
+	"github.com/bogdanfinn/utls/internal/hpke"
 	"github.com/bogdanfinn/utls/testenv"
 )
 

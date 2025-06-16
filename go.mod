@@ -2,6 +2,8 @@ module github.com/bogdanfinn/utls
 
 go 1.24
 
+toolchain go1.24.1
+
 retract (
 	v1.4.1 // #218
 	v1.4.0 // #218 panic on saveSessionTicket

@@ -27,7 +27,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/refraction-networking/utls/internal/fips140tls"
+	"github.com/bogdanfinn/utls/internal/fips140tls"
 )
 
 func testClientHello(t *testing.T, serverConfig *Config, m handshakeMessage) {
@@ -1088,7 +1088,7 @@ func TestHandshakeServerGetCertificateExtensions(t *testing.T) {
 				vers:                         vers,
 				random:                       make([]byte, 32),
 				cipherSuites:                 []uint16{TLS_AES_128_GCM_SHA256},
-				compressionMethods:           []uint8{compressionNone},
+				compressionMethods:           []uint8{CompressionNone},
 				serverName:                   "test",
 				keyShares:                    []keyShare{{group: CurveP256, data: pk.PublicKey().Bytes()}},
 				supportedCurves:              []CurveID{CurveP256},
@@ -1098,15 +1098,15 @@ func TestHandshakeServerGetCertificateExtensions(t *testing.T) {
 			// the clientHelloMsg initialized just above is serialized with
 			// two extensions: server_name(0) and application_layer_protocol_negotiation(16)
 			expectedExtensions := []uint16{
-				extensionServerName,
-				extensionSupportedCurves,
-				extensionSignatureAlgorithms,
-				extensionKeyShare,
+				ExtensionServerName,
+				ExtensionSupportedCurves,
+				ExtensionSignatureAlgorithms,
+				ExtensionKeyShare,
 			}
 
 			if vers == VersionTLS13 {
 				clientHello.supportedVersions = []uint16{VersionTLS13}
-				expectedExtensions = append(expectedExtensions, extensionSupportedVersions)
+				expectedExtensions = append(expectedExtensions, ExtensionSupportedVersions)
 			}
 
 			// Go's TLS client presents extensions in the ClientHello sorted by extension ID

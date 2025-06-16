@@ -4,7 +4,6 @@ import (
 	"bufio"
 	// "crypto/tls"
 	"encoding/base64"
-
 	"errors"
 	"fmt"
 	"io"
@@ -59,7 +58,7 @@ func HttpGetCustom(hostname string, addr string) (*http.Response, error) {
 	if err != nil {
 		return nil, fmt.Errorf("net.DialTimeout error: %+v", err)
 	}
-	uTlsConn := tls.UClient(dialConn, &config, tls.HelloGolang)
+	uTlsConn := tls.UClient(dialConn, &config, tls.HelloGolang, false, false)
 	// uTlsConn := tls.Client(dialConn, &config)
 	defer uTlsConn.Close()
 
