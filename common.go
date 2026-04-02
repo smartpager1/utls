@@ -1222,6 +1222,7 @@ var supportedVersions = []uint16{
 	VersionTLS12,
 	VersionTLS11,
 	VersionTLS10,
+	VersionTLS13_Facebook,
 }
 
 // roleClient and roleServer are meant to call supportedVersions and parents
