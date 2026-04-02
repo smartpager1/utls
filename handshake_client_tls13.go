@@ -189,7 +189,7 @@ func (hs *clientHandshakeStateTLS13) checkServerHelloOrHRR() error {
 
 	if hs.serverHello.supportedVersion != VersionTLS13 && hs.serverHello.supportedVersion != VersionTLS13_Facebook {
 		c.sendAlert(alertIllegalParameter)
-		return errors.New("tls: server selected an invalid version after a HelloRetryRequest")
+		return errors.New("tls: server selected an invalid version after a HelloRetryRequest "+hs.serverHello.supportedVersion)
 	}
 
 	if hs.serverHello.vers != VersionTLS12 {
